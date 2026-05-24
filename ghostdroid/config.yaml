@@ -1,0 +1,50 @@
+# GhostDroid CLI Configuration
+# Ethical Android Security Testing Framework
+
+settings:
+  theme: cyberpunk
+  auto_update: true
+  log_level: INFO
+  session_timeout: 300
+  max_devices: 10
+  animation_speed: 0.03
+  banner_rotation: true
+
+adb:
+  path: adb
+  default_port: 5555
+  connection_timeout: 10
+  auto_connect: false
+
+database:
+  path: database/ghostdroid.db
+  backup_enabled: true
+
+reporting:
+  default_format: html
+  include_screenshots: false
+  compression: false
+
+network:
+  scan_range: 192.168.1.0/24
+  scan_ports: [22, 80, 443, 5555, 8080]
+  timeout: 5
+
+modules:
+  enabled:
+    - wifi_scanner
+    - apk_analyzer
+    - permission_audit
+    - device_info
+    - network_mapper
+    - root_checker
+    - reverse_shell_sim
+    - phishing_sim
+    - payload_generator
+  risk_level: educational
+  sandbox_mode: true
+
+ethical:
+  disclaimer: true
+  require_authorization: true
+  log_consent: true
