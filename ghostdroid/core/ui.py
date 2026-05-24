@@ -126,17 +126,19 @@ def show_help():
     help_text = """
 [bold cyan]Available Commands:[/]
 
+[green]  usb-scan[/]           Detect connected USB devices
+[green]  sessions[/]           Manage active sessions
+[green]  config[/]             Configure DNS, ports, encryption
+[green]  build-dropper[/]     Create standalone APK
+[green]  run-payload[/]       Inject payload via USB
+[green]  list-payloads[/]     View available payloads
+[green]  list-modules[/]      View available modules
+[green]  list-exploits[/]     View available exploits
+[green]  bluetooth-hid[/]     Bluetooth HID device attack
+[green]  otg-run[/]           Run payload via OTG
 [green]  devices[/]            List connected Android devices
 [green]  scan[/]               Scan network for ADB-enabled devices
 [green]  analyze[/]            Analyze a connected device
-[green]  sessions[/]           Manage active sessions
-[green]  modules[/]            List and manage modules
-[green]  run[/]                Run a specific module
-[green]  payloads[/]           List available payloads
-[green]  generate[/]           Generate a payload
-[green]  exploit-lab[/]       Run exploitation simulation
-[green]  report[/]             Generate security report
-[green]  logs[/]               View activity logs
 [green]  shell[/]              Interactive ADB shell
 [green]  info[/]               Show system information
 [green]  clear[/]              Clear the screen
@@ -173,3 +175,60 @@ def show_module_help():
 """
     console.print(Panel(help_text.strip(), title="[bold magenta]MODULE SYSTEM[/]",
                          border_style="purple", box=box.HEAVY))
+
+
+MENU_ENTRIES = [
+    ("1",  "USB Port Scan  —  Detect connected USB devices",            "green"),
+    ("2",  "Sessions      —  Manage active sessions",                   "purple"),
+    ("3",  "Configuration —  Configure DNS, ports, encryption",         "yellow"),
+    ("4",  "Build Dropper —  Create standalone APK",                    "red"),
+    ("5",  "Run Payload   —  Inject payload via USB",                   "red"),
+    ("6",  "List Payloads —  View available payloads",                  "cyan"),
+    ("7",  "List Modules  —  View available modules",                   "purple"),
+    ("8",  "List Exploits —  View available exploits",                  "red"),
+    ("9",  "Bluetooth HID —  Bluetooth HID device attack",              "green"),
+    ("10", "OTG USB Run   —  Run payload via OTG",                      "yellow"),
+    ("0",  "Exit          —  Exit program",                             "red"),
+]
+
+
+def show_numbered_menu(title, entries, style="cyan", show_legend=True):
+    lines = []
+    for num, label, *rest in entries:
+        color = rest[0] if rest else "green"
+        pad = " " if num.isdigit() and int(num) < 10 else ""
+        icon_map = {
+            "1": "🔌", "2": "📋", "3": "⚙️", "4": "💣", "5": "💉",
+            "6": "📦", "7": "🧩", "8": "🔫", "9": "📡", "10": "🔗",
+            "0": "🚪",
+        }
+        icon = icon_map.get(num, " ")
+        lines.append(f"  [{color}][{pad}{num}][/]  {icon}  {label}")
+
+    if show_legend:
+        lines.append("")
+        lines.append(f"[dim]  [m] Toggle menu/command mode[/]")
+
+    panel = Panel(
+        "\n".join(lines),
+        title=f"[bold {style}]{title}[/]",
+        border_style=style,
+        box=box.HEAVY,
+        subtitle="[dim]enter number[/]",
+    )
+    console.print(panel)
+
+
+def show_submenu(title, entries, style="cyan"):
+    lines = []
+    for num, label in entries:
+        pad = " " if num.isdigit() and int(num) < 10 else ""
+        lines.append(f"  [{style}][{pad}{num}][/]  {label}")
+    panel = Panel(
+        "\n".join(lines),
+        title=f"[bold {style}]{title}[/]",
+        border_style=style,
+        box=box.HEAVY,
+        subtitle="[dim]enter number[/]",
+    )
+    console.print(panel)

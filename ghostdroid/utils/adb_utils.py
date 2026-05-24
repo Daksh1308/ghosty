@@ -1,6 +1,7 @@
 import subprocess
 import re
 import os
+import shlex
 from typing import Optional, List, Dict, Tuple
 
 
@@ -52,9 +53,9 @@ def run_adb_command(serial: str, command: str, timeout: int = 15) -> Tuple[bool,
     adb = get_adb_path()
     try:
         if serial:
-            full_cmd = [adb, "-s", serial] + command.split()
+            full_cmd = [adb, "-s", serial] + shlex.split(command)
         else:
-            full_cmd = [adb] + command.split()
+            full_cmd = [adb] + shlex.split(command)
         result = subprocess.run(full_cmd, capture_output=True, text=True, timeout=timeout)
         return (result.returncode == 0, result.stdout.strip())
     except subprocess.TimeoutExpired:
@@ -68,11 +69,11 @@ def install_apk(serial: str, apk_path: str) -> Tuple[bool, str]:
 
 
 def pull_file(serial: str, remote_path: str, local_path: str) -> Tuple[bool, str]:
-    return run_adb_command(serial, f"pull \"{remote_path}\" \"{local_path}\"", timeout=30)
+    return run_adb_command(serial, f"pull {remote_path} {local_path}", timeout=30)
 
 
 def push_file(serial: str, local_path: str, remote_path: str) -> Tuple[bool, str]:
-    return run_adb_command(serial, f"push \"{local_path}\" \"{remote_path}\"", timeout=30)
+    return run_adb_command(serial, f"push {local_path} {remote_path}", timeout=30)
 
 
 def shell_command(serial: str, cmd: str, timeout: int = 15) -> str:
