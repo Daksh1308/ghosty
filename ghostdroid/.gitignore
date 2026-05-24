@@ -1,0 +1,31 @@
+# GhostDroid .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# GhostDroid runtime
+database/ghostdroid.db
+reports/*
+logs/*
+!logs/.gitkeep
+payloads/generated/*
+!payloads/generated/.gitkeep
+
+# Environment
+.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
